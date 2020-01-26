@@ -1,0 +1,13 @@
+#root {
+    background: #333333;
+    color: #f1f1f1;
+}
+
+.App {
+    text-align: center;
+    padding: 5%;
+}
+
+.App-title {
+    font-size: 26px;
+}
