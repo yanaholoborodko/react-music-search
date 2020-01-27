@@ -2,14 +2,16 @@ import React, {Component} from "react";
 import './App.css';
 import { FormGroup, FormControl, InputGroup, Button } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
-import Profile from './Profile'
+import Profile from './Profile';
+import Gallery from './Gallery';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       query: '',
-      artist: null
+      artist: null,
+      tracks: []
     }
   }
 
@@ -25,8 +27,22 @@ class App extends Component {
     .then(response => response.json())
     .then(json => {
       const artist = json.artists.items[0];
-      console.log(artist);
       this.setState({artist});
+
+      //fetching artist`s top tracks
+      FETCH_URL = `${TRACKS_URL}${artist.id}/top-tracks?country=PL&`
+      fetch(FETCH_URL, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${process.env.REACT_APP_SPOTIFY_TOKEN}` }
+      })
+      .then(response => response.json())
+      .then(json => {
+        /* const tracks = json.tracks; ES6 trick below that means the same
+        if there are multiple values to declare, we can use const {tracks,albums} = json;
+        to declare each of the variables */
+        const {tracks} = json;
+        this.setState({tracks});
+      });
     });
   }
 
@@ -57,11 +73,11 @@ class App extends Component {
           this.state.artist !== null
           ? <div>
                 <Profile
-                    artist={this.state.artist}
+                  artist={this.state.artist}
                 />
-                <div className="Gallery">
-                  Gallery
-                </div>
+                <Gallery
+                  tracks={this.state.tracks}
+                />
               </div>
           : <div></div>
         }
