@@ -64,7 +64,7 @@ class App extends Component {
               }}
             />
             <InputGroup.Append onClick={() => this.search()}>
-            <Button><FaSearch/></Button>
+            <Button variant="warning"><FaSearch/></Button>
             </InputGroup.Append>
           </InputGroup>
 
